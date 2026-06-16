@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=System Scanner
+GenericName=Network Scanner
+Comment=Network scanning and port detection utility for system administrators
+Exec=/opt/system-scanner/run.sh
+Icon=/opt/system-scanner/assets/icon.png
+Terminal=false
+Categories=Network;Utility;System;Monitor;
+Keywords=network;scan;port;tcp;admin;
+StartupNotify=true
+StartupWMClass=system-scanner

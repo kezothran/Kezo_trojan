@@ -1,0 +1,87 @@
+==============================================================================
+  System Scanner — AppImage Packaging Notes
+==============================================================================
+
+AppImage is a universal Linux package format. This document describes how
+to create an AppImage for System Scanner.
+
+── Prerequisites ────────────────────────────────────────────────────────
+
+  1. Download appimagetool:
+       wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+       chmod +x appimagetool-x86_64.AppImage
+
+  2. Build the project with PyInstaller first:
+       bash build.sh
+
+── AppDir Structure ─────────────────────────────────────────────────────
+
+  SystemScanner.AppDir/
+  ├── AppRun
+  ├── system-scanner.desktop
+  ├── system-scanner.png
+  └── usr/
+      ├── bin/
+      │   └── system-scanner          (PyInstaller binary)
+      ├── lib/
+      │   └── (PyInstaller libs)
+      └── share/
+          ├── applications/
+          │   └── system-scanner.desktop
+          └── icons/
+              └── hicolor/
+                  └── 256x256/
+                      └── apps/
+                          └── system-scanner.png
+
+── Steps ────────────────────────────────────────────────────────────────
+
+  1. Build the standalone binary:
+       bash build.sh
+
+  2. Create the AppDir:
+       mkdir -p SystemScanner.AppDir/usr/bin
+       mkdir -p SystemScanner.AppDir/usr/share/applications
+       mkdir -p SystemScanner.AppDir/usr/share/icons/hicolor/256x256/apps
+
+  3. Copy files:
+       cp -r dist/system-scanner/* SystemScanner.AppDir/usr/bin/
+       cp assets/icon.png SystemScanner.AppDir/system-scanner.png
+       cp assets/icon.png SystemScanner.AppDir/usr/share/icons/hicolor/256x256/apps/system-scanner.png
+       cp packaging/system-scanner.desktop SystemScanner.AppDir/
+       cp packaging/system-scanner.desktop SystemScanner.AppDir/usr/share/applications/
+
+  4. Create AppRun script:
+
+       #!/bin/bash
+       SELF=$(readlink -f "$0")
+       HERE=${SELF%/*}
+       export PATH="${HERE}/usr/bin:${PATH}"
+       export LD_LIBRARY_PATH="${HERE}/usr/lib:${LD_LIBRARY_PATH}"
+       exec "${HERE}/usr/bin/system-scanner" "$@"
+
+     Save as SystemScanner.AppDir/AppRun and make executable:
+       chmod +x SystemScanner.AppDir/AppRun
+
+  5. Update the .desktop file Exec line:
+       Exec=system-scanner
+
+  6. Build the AppImage:
+       ./appimagetool-x86_64.AppImage SystemScanner.AppDir SystemScanner-x86_64.AppImage
+
+  7. Run:
+       chmod +x SystemScanner-x86_64.AppImage
+       ./SystemScanner-x86_64.AppImage
+
+── Tips ─────────────────────────────────────────────────────────────────
+
+  - AppImages are portable: no install needed, just run them.
+  - For best compatibility, build on an older Ubuntu (e.g. 18.04 or 20.04)
+    so the glibc version is broadly compatible.
+  - You can use linuxdeploy for a more automated AppImage build:
+      https://github.com/linuxdeploy/linuxdeploy
+  - Test on a clean VM before distributing.
+
+── Tested On ────────────────────────────────────────────────────────────
+
+  Ubuntu 21.04, kernel 5.11, Python 3.9, PySide6 6.2+

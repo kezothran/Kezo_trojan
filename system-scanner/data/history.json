@@ -1,0 +1,60 @@
+[
+  {
+    "id": 1,
+    "target": "127.0.0.1",
+    "port_range": "1-1024",
+    "timestamp": "2026-04-07 12:46:38",
+    "result_count": 2,
+    "results": [
+      {
+        "host": "127.0.0.1",
+        "port": 135,
+        "service": "MSRPC",
+        "state": "Open",
+        "timestamp": "2026-04-07 12:46:28",
+        "verified": "—"
+      },
+      {
+        "host": "127.0.0.1",
+        "port": 445,
+        "service": "SMB",
+        "state": "Open",
+        "timestamp": "2026-04-07 12:46:31",
+        "verified": "—"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "target": "192.168.56.1",
+    "port_range": "1-1024",
+    "timestamp": "2026-04-07 12:48:09",
+    "result_count": 3,
+    "results": [
+      {
+        "host": "192.168.56.1",
+        "port": 135,
+        "service": "MSRPC",
+        "state": "Open",
+        "timestamp": "2026-04-07 12:47:59",
+        "verified": "—"
+      },
+      {
+        "host": "192.168.56.1",
+        "port": 139,
+        "service": "NetBIOS-SSN",
+        "state": "Open",
+        "timestamp": "2026-04-07 12:47:59",
+        "verified": "—"
+      },
+      {
+        "host": "192.168.56.1",
+        "port": 445,
+        "service": "SMB",
+        "state": "Open",
+        "timestamp": "2026-04-07 12:48:02",
+        "verified": "—"
+      }
+    ]
+  }
+]
